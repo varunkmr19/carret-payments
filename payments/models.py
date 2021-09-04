@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from django.contrib.auth.models import User
+from authentication.models import User
 
 # Create your models here.
 class Product(models.Model):
@@ -17,8 +17,8 @@ class Transaction(models.Model):
     ('success', 'Success'),
     ('failed', 'Failed'),
   ]
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
-  product = models.ForeignKey(Product, on_delete=models.CASCADE)
+  user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order')
+  product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='transactions')
   order_id = models.CharField(max_length=500, db_index=True, editable=False, unique=True)
   payment_status = models.CharField(max_length=120, choices=STATUS, default='pending')
   total_amount = models.IntegerField(default=0) # in paisa (1/100th of rupee)
