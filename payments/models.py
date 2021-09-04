@@ -1,12 +1,8 @@
 import uuid
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from authentication.models import User
 
 # Create your models here.
-class User(AbstractUser):
-  auth_key = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True)
-  phone_number = models.CharField(max_length=10, null=True, blank=True)
-
 class Product(models.Model):
   title = models.CharField(max_length=120)
   description = models.TextField(blank=True, null=True)
