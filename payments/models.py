@@ -1,8 +1,12 @@
 import uuid
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+class User(AbstractUser):
+  auth_key = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True)
+  phone_number = models.CharField(max_length=10, null=True, blank=True)
+
 class Product(models.Model):
   title = models.CharField(max_length=120)
   description = models.TextField(blank=True, null=True)
@@ -17,8 +21,8 @@ class Transaction(models.Model):
     ('success', 'Success'),
     ('failed', 'Failed'),
   ]
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
-  product = models.ForeignKey(Product, on_delete=models.CASCADE)
+  user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='order')
+  product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='transactions')
   order_id = models.CharField(max_length=500, db_index=True, editable=False, unique=True)
   payment_status = models.CharField(max_length=120, choices=STATUS, default='pending')
   total_amount = models.IntegerField(default=0) # in paisa (1/100th of rupee)
