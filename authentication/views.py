@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -51,6 +52,7 @@ def logout_view(request):
     return JsonResponse({'message': 'Successfully logged out.'}, status=200)
 
 @require_POST
+@csrf_exempt
 def register_view(request):
   data = json.loads(request.body)
   username = data.get('username')
