@@ -116,14 +116,14 @@ def verify_payment(request):
 
   if check is not None:
     # Payment failed
-    order.status = 'failed'
+    order.payment_status = 'failed'
     order.save()
     return Response({
       'status': 500,
       'message': 'Something went wrong'
     })
 
-  order.status = "success"
+  order.payment_status = "success"
   order.save()
 
   return Response({
